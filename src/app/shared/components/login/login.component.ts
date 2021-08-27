@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
         const token = res.token
         this.loginService.saveToken(token);
         this.loginService.saveUsername(token);
-        this.router.navigate(['/usuarioslist']);
+        this.router.navigate(['/users/list']);
       }
 
     )

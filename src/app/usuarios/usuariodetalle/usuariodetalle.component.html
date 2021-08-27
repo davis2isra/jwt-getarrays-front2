@@ -1,0 +1,19 @@
+<div class="col-lg-12">
+
+  <!-- Background Gradient Utilities -->
+  <div class="card shadow mb-10">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Detalles Del Usuario
+          </h6>
+      </div>
+      <div class="card-body bg-gradient-info">
+          <div class="px-3 py-5  text-white" *ngIf="usuario">
+            <div><b>Id: </b> {{usuario.id}}</div>
+            <div><b>Nombre: </b> {{usuario.name}}</div>
+            <div><b>Username: </b> {{usuario.username}}</div>
+          </div>
+          <button type="button" class="btn btn-info" [routerLink]="['/users']">Regresar</button>
+      </div>
+  </div>
+
+</div>
