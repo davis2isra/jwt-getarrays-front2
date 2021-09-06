@@ -1,7 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { Usuario } from 'src/app/model/usuario.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -18,7 +21,8 @@ export class UsuarioeditarComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              private usuariosService: UsuarioService) { }
+              private usuariosService: UsuarioService,
+              private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.usuariosForm = this.fb.group({
@@ -66,11 +70,23 @@ export class UsuarioeditarComponent implements OnInit {
 
         if(usr.id === 0) {
           this.usuariosService.createUsuario(usr).subscribe(
-            response => this.onSaveComplete()
+            response =>{
+              this.onSaveComplete();
+              this.sendNotification(NotificationType.SUCCESS, 'Usuario Creado Exitosamente');
+            },
+            (errorResponse: HttpErrorResponse) => {
+              this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+            }
           )
         } else {
           this.usuariosService.updateUsuario(usr).subscribe(
-            response => this.onSaveComplete()
+            response =>{
+              this.onSaveComplete();
+              this.sendNotification(NotificationType.SUCCESS, 'Usuario Editado Exitosamente');
+            },
+            (errorResponse: HttpErrorResponse) => {
+              this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+            }
           )
         }
       }
@@ -79,7 +95,16 @@ export class UsuarioeditarComponent implements OnInit {
 
   onSaveComplete() {
     this.usuariosForm.reset();
-    this.router.navigate(['/users/list'])
+    this.router.navigate(['/users/list']);
+
+  }
+
+  private sendNotification(notificationType: NotificationType, message: string): void {
+    if(message) {
+      this.notificationService.notify(notificationType, message );
+    } else {
+      this.notificationService.notify(notificationType, 'Ha ocurrido un error. Por favor, intentelo de nuevo.' );
+    }
   }
 
 

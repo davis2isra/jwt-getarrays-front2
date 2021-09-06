@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { Usuario } from 'src/app/model/usuario.model';
 import { LoginService } from 'src/app/services/login.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
@@ -19,7 +21,8 @@ export class UsuarioslistComponent implements OnInit {
   constructor(private usuarioService: UsuarioService,
               private loginService: LoginService,
               private router: Router,
-              private modalService: ModalService) { }
+              private modalService: ModalService,
+              private notificationService: NotificationService) { }
 
   ngOnInit(): void {
 
@@ -50,6 +53,7 @@ export class UsuarioslistComponent implements OnInit {
       respuesta => {
         this.getUsuarios();
         this.router.navigate(['/users/list']);
+        this.notificationService.notify(NotificationType.SUCCESS, 'Has borrado un usuario con éxito.');
       }
     )
   }

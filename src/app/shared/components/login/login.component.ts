@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { LoginService } from 'src/app/services/login.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private loginService: LoginService,
-              private router: Router) { }
+              private router: Router,
+              private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -33,6 +36,10 @@ export class LoginComponent implements OnInit {
         this.loginService.saveToken(token);
         this.loginService.saveUsername(token);
         this.router.navigate(['/users/list']);
+        this.notificationService.notify(NotificationType.SUCCESS, `Hola ${localStorage.getItem('username')}. Has iniciado sesion exitosamente.`)
+      },
+      (error) => {
+        this.notificationService.notify(NotificationType.ERROR, 'Ha ocurrido un error. Por favor, intentelo de nuevo.');
       }
 
     )

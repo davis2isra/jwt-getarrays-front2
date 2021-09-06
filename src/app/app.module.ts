@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { NotificationModule } from './notification.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UsuariosModule } from './usuarios/usuarios.module';
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
-    UsuariosModule
+    UsuariosModule,
+    NotificationModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
